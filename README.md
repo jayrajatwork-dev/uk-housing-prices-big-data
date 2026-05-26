@@ -47,9 +47,9 @@ Interactive report boards were structured to split transaction parameters dynami
 ### 📊 Project Dashboards
 *Note: High-quality representations of the dashboards are embedded below. If you want to explore the interactive files, see the external links in the replication section.*
 
-![Price Paid Dashboard](dashboards/dashboard_price_paid.png)
+![Sum of Prices Dashboard](dashboards/Sum_Dashboard.png)
 
-![Property Volume Dashboard](dashboards/dashboard_prop_count.png)
+![Property Volume Dashboard](dashboards/Count_Dashboard.png)
 
 ### 3. Machine Learning (AWS SageMaker)
 * Conducted advanced Exploratory Data Analysis (EDA) and data pre-processing within SageMaker cluster pipelines.
@@ -72,7 +72,7 @@ Interactive report boards were structured to split transaction parameters dynami
 
 2. **Power BI Project File (.pbix):**
    The compiled dashboard source file is roughly 800 MB, exceeding GitHub's 100 MB upload threshold. You can request access or download the active dashboard project here:
-   * 🔗 [Download Power BI (.pbix) File via Google Drive](REPLACE_WITH_YOUR_ACTUAL_DRIVE_LINK)
+   * 🔗 [Download Power BI (.pbix) File via Google Drive](https://drive.google.com/file/d/1LwCwraZvMj_4Zj4VcCfDxGZWmiKJQ5z3/view?usp=drive_link)
 
 3. **Explore ML & Code Notebooks:**
    Open the `notebooks/` directory right here on GitHub to instantly see the fully executed Jupyter Notebook, complete with data visualizations, processing steps, and model metrics.
