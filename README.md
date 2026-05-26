@@ -47,9 +47,9 @@ Interactive report boards were structured to split transaction parameters dynami
 ### 📊 Project Dashboards
 *Note: High-quality representations of the dashboards are embedded below. If you want to explore the interactive files, see the external links in the replication section.*
 
-![Sum of Prices Dashboard](dashboards/Sum_Dashboard.png)
+![Sum of Prices Dashboard](dashboard/Sum_Dashboard.png)
 
-![Property Volume Dashboard](dashboards/Count_Dashboard.png)
+![Property Volume Dashboard](dashboard/Count_Dashboard.png)
 
 ### 3. Machine Learning (AWS SageMaker)
 * Conducted advanced Exploratory Data Analysis (EDA) and data pre-processing within SageMaker cluster pipelines.
