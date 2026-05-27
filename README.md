@@ -30,8 +30,6 @@ This project processes the complete **Price Paid Data** provided by **His Majest
 
 ---
 
----
-
 ## 🚀 Data Processing & Analytical Pipeline
 
 ### 1. Big Data Analytics (AWS EMR)
