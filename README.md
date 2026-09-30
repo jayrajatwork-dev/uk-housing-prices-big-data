@@ -1,83 +1,142 @@
-# UK Housing Prices: Data Analysis, Visualization & Prediction
+# NRW Rail Delay Analytics
 
-An end-to-end Big Data Analytics and Machine Learning project focused on processing, analyzing, and predicting property transaction trends in England and Wales using cloud infrastructure and modern Business Intelligence tools.
+A cloud-based analytics platform that turns real-time Deutsche Bahn data into delay insights and delay-risk predictions for rail travel across North Rhine-Westphalia, Germany.
 
----
-
-## 📌 Project Overview
-This project processes the complete **Price Paid Data** provided by **His Majesty's (HM) Land Registry**, covering over **27 million records** (approx. 2.8 GB) of full-market value property sales from 1995 onwards. Due to the scale of the dataset, processing and analytics were offloaded to a distributed cloud computing cluster, followed by interactive visual engineering and predictive modeling.
-
-### 👥 Project Team (C-DAC Kharghar)
-* **Ranjit Kailasrao More**
-* **Prathmesh Shivaji Dalve**
-* **Jayraj Shrikant Maghade**
-* **Nayan Surendra Dhoble**
-* **Sonali Ashok Waman**
-* **Shivaraj Hiraman Shelar**
-* **Project Guide:** Parag Thakur | **Course Co-ordinator:** Vineeta Singh
+**Status: Complete.** Built as a solo M.Sc. Applied IT Project (Mediadesign Hochschule, Düsseldorf) between July and September 2026. The pipeline collected live data from 24 July to 29 September 2026.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## The problem
 
-* **Cloud Infrastructure (AWS):**
-  * **Amazon S3:** Scalable object storage holding the raw 2.8 GB `.csv` data cluster.
-  * **Amazon EC2:** Created a `t2.large` Windows Instance to ingest raw registry transactions via AWS CLI.
-  * **Amazon EMR (Elastic MapReduce):** Provisioned a Hadoop cluster comprised of 1 Master Node (`m4.xlarge`) and 2 Slave Nodes (`m4.large`).
-* **Big Data Frameworks:** Spark SQL, PySpark RDDs/DataFrames, and Apache Hive.
-* **Business Intelligence:** Microsoft Power BI Desktop for data modeling and interactive dashboard tracking.
-* **Machine Learning Environment:** AWS SageMaker running a Python Jupyter Lab notebook ecosystem.
+Rail delay information in NRW is reactive: travellers only learn a train is late once it already is. There is no accessible way to see which lines and stations are structurally unreliable, or to estimate delay risk before a departure.
 
----
+## The solution
 
-## 🚀 Data Processing & Analytical Pipeline
+An end-to-end cloud pipeline that:
 
-### 1. Big Data Analytics (AWS EMR)
-* **Spark SQL:** Tailored structural mappings using explicit schemas (`StructType`) to quickly answer key market vectors. Queries processed yearly averages, identifying **2021** as the peak historic transaction year with an average valuation of **£381.10K**.
-* **PySpark:** Implemented distributed map-filtering mechanics via RDD arrays to isolate granular traits, proving established buildings are vastly favored over newly built ones (~24.6M vs ~2.8M sold).
-* **Apache Hive:** Data tables were built externally over the distributed runtime directory using Hive Query Language (HQL) to aggregate structural features, tracking transactional changes across regional county lines.
-
-### 2. Data Visualization (Power BI)
-Interactive report boards were structured to split transaction parameters dynamically via cluster bar charts, donut matrices, geographical layers, and slicer tools:
-* **Dashboard 1 (Price Paid Analytics):** Tracks valuation distributions. Insights confirmed **Greater London** controls the highest market capitalization, representing roughly **21% (£1.39 Trillion)** of the total real estate transaction value in the UK.
-* **Dashboard 2 (Property Volume Metrics):** Highlights market frequency shifts over the timeline, noting historic peak purchase volumes occurring in **2002 (1.35 Million properties)**.
-
-### 📊 Project Dashboards
-*Note: High-quality representations of the dashboards are embedded below. If you want to explore the interactive files, see the external links in the replication section.*
-
-![Sum of Prices Dashboard](dashboard/Sum_Dashboard.png)
-
-![Property Volume Dashboard](dashboard/Count_Dashboard.png)
-
-### 3. Machine Learning (AWS SageMaker)
-* Conducted advanced Exploratory Data Analysis (EDA) and data pre-processing within SageMaker cluster pipelines.
-* Built Machine Learning algorithms—specifically **Linear Regression** and **Decision Tree Regressor**—on localized sub-samples (5 Million rows) to predict future price actions and optimize valuation models. 
-* Due to extreme variance in a 27-million-row macro environment, the Decision Tree model achieved a baseline operational accuracy of **~60%**.
+- **Ingests** live delay data every 5 minutes from 20 major NRW stations via the Deutsche Bahn Timetables API
+- **Enriches** it with hourly weather data from Open-Meteo
+- **Stores** it in a PostgreSQL data warehouse, deduplicated and cleaned
+- **Predicts** delay risk with a gradient boosting model
+- **Visualizes** delay patterns in an interactive Power BI dashboard
 
 ---
 
-## 📈 Key Insights Summary
-* **Regional Dominance:** Greater London remains the absolute hub of UK real estate capital, ahead of Westminster and Kensington/Chelsea.
-* **Property Preferences:** Terraced properties represent the highest volume class in the UK (8.2 Million transactions), followed closely by Semi-Detached models. Freehold tenure remains significantly more popular than leasehold options.
-* **Temporal Patterns:** June and August consistently manifest as seasonal high-volume entry months for annual house transactions across decades.
+## Dashboard
+
+![Dashboard overview](docs/screenshots/dashboard-overview.png)
+*Station map with headline figures and delay by hour of day.*
+
+![Category and station breakdown](docs/screenshots/dashboard-breakdown.png)
+*Delay distribution by train category and station.*
 
 ---
 
-## 🛠️ How to Replicate and Run Locally
+## Tech stack
 
-1. **Dataset Ingestion:**
-   Due to GitHub's file storage limits, the raw 2.8 GB dataset is omitted from this repository. You can access and download the raw transactional source files directly from the [HM Land Registry Price Paid Data Portal](https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads).
+| Layer | Technology |
+|---|---|
+| **Compute** | Azure Functions (Python 3.13, Flex Consumption plan, timer-triggered) |
+| **Storage** | Azure Data Lake Storage Gen2 |
+| **Database** | Azure Database for PostgreSQL, Flexible Server |
+| **Streaming (prototype)** | Azure Event Hubs with the Kafka protocol |
+| **Machine learning** | scikit-learn (HistGradientBoosting), SHAP for explainability |
+| **Visualization** | Power BI Desktop |
+| **Data sources** | Deutsche Bahn Timetables and Station Data APIs, Open-Meteo |
 
-2. **Power BI Project File (.pbix):**
-   The compiled dashboard source file is roughly 800 MB, exceeding GitHub's 100 MB upload threshold. You can request access or download the active dashboard project here:
-   * 🔗 [Download Power BI (.pbix) File via Google Drive](https://drive.google.com/file/d/1LwCwraZvMj_4Zj4VcCfDxGZWmiKJQ5z3/view?usp=drive_link)
+All infrastructure ran on **Microsoft Azure** (Switzerland North) under an Azure for Students subscription.
 
-3. **Explore ML & Code Notebooks:**
-   Open the `notebooks/` directory right here on GitHub to instantly see the fully executed Jupyter Notebook, complete with data visualizations, processing steps, and model metrics.
-"""
+---
 
-## 📂 Repository Structure
-```text
-├── notebooks/            # Jupyter Notebooks containing SageMaker EDA & ML models
-├── dashboards/           # Power BI dashboard screenshots (.png formats)
-└── docs/                 # Detailed project dissertation report (PDF)
+## Architecture
+
+```
+DB Timetables API
+      |
+      v
+Azure Function (polls every 5 min)
+      |
+      v
+Data Lake Gen2 (raw JSON, by station / date / hour)
+      |
+      v
+Scheduled Azure Function (incremental transform + weather refresh)
+      |
+      v
+PostgreSQL warehouse  ----->  Power BI dashboard
+      |
+      +---------------------->  Delay-risk model (scikit-learn)
+```
+
+Both functions run on a schedule in Azure, so the system keeps itself up to date without any local machine.
+
+---
+
+## Results
+
+Over the collection period the warehouse stored more than 100,000 stop events from 20 stations. Replacement-bus services were excluded from analysis, since they are added during disruptions and have no original timetable to be late against.
+
+The model was trained on the earlier weeks and tested on the most recent two weeks of data, which it had never seen.
+
+| Model | Result | Naive baseline |
+|---|---|---|
+| Delay-risk classifier (delayed more than 5 min, yes or no) | **ROC-AUC 0.781** | 0.500 |
+| Delay-minutes regression | R² -0.019 | 0 (predicting the mean) |
+| Delay-range classifier (4 ranges) | Accuracy 39.7% | 65.5% (always the most common range) |
+
+**How to read these numbers.** The source feed only reports stops where something changed, so about 93% of the test records are delayed. On data this lopsided, a model that always says "delayed" already scores about 93% accuracy, so accuracy is not a meaningful measure. ROC-AUC is: the classifier ranks a delayed stop above an on-time one about 78% of the time, against 50% by chance.
+
+Predicting *how many minutes* a train will be late did not beat simple baselines. Station, train type, time and weather indicate whether a delay is likely, but its length appears to depend on incident-specific factors that are not in this data.
+
+According to SHAP, the strongest drivers of delay risk were train category, hour of day and temperature. Precipitation and wind contributed comparatively little.
+
+---
+
+## Key findings
+
+- **Detected a real infrastructure incident independently.** Delays of up to 1,388 minutes and unexpected negative delays were traced to a construction-train derailment that closed the Aachen-Köln line in late July 2026, confirmed against public news reports. The raw data was kept, and outliers above 180 minutes are excluded in a separate, documented view.
+- **Diagnosed source-API behaviour empirically.** The DB `/fchg` endpoint returns full current-state snapshots on every poll, not incremental changes. The first load stored 1.16 million rows; redesigning it as an upsert reduced this to the genuine unique events.
+- **Tested assumptions against real data.** An API field that looked like a cancellation flag was tested on 500 real files and rejected, which led to the correct field for identifying added bus services.
+- **Reported limitations honestly.** Delay-magnitude prediction was attempted with two different approaches, and both failed in the same way. This is documented as a finding.
+
+---
+
+## Repository structure
+
+```
+├── ingestion/          Azure Function that polls the DB API and writes to Data Lake
+├── pipeline/           Transform, weather backfill, scheduled automation
+├── ml/                 Model training notebook and scoring scripts
+├── sql/                Database schema and views
+├── kafka-experiment/   Standalone Kafka / Event Hubs producer and consumer
+└── docs/               Dashboard screenshots
+```
+
+---
+
+## Setup
+
+1. Clone the repository and copy `.env.example` to `.env`, filling in your own credentials (DB API, Azure Storage, PostgreSQL).
+2. `pip install -r ingestion/requirements.txt`
+3. Deploy `ingestion/` as an Azure Function App (Python 3.13, Flex Consumption) and add the same values as app settings.
+4. Run `sql/schema.sql` against your PostgreSQL instance.
+5. Run `pipeline/transform.py` and `pipeline/weather_backfill.py` once to backfill existing data. After that, the scheduled function keeps the warehouse current.
+6. Open `ml/NRW_Delay_Model_Training.ipynb`. It reads directly from the `ml_training_data` view, so no export step is needed. (`ml/explore_data.py` is optional, for quick data exploration.)
+7. Connect Power BI Desktop to your PostgreSQL instance to rebuild the dashboard.
+
+---
+
+## Possible extensions
+
+- Live predictions for upcoming departures, using weather forecasts instead of observed weather
+- More stations and regions beyond NRW
+- A simple user-facing interface for the delay predictor
+- Features that describe incidents (for example disruption messages), which may make delay-length prediction possible
+
+---
+
+## Author
+
+Jayraj Maghade, M.Sc. Information Technology (AI and Data Analytics), Mediadesign Hochschule Düsseldorf
+
+[LinkedIn](https://www.linkedin.com/in/jayraj-maghade/)
